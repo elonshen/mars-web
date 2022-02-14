@@ -1,15 +1,20 @@
 <template>
   <el-container>
-    <el-aside width="200px">
-      <el-menu :router=true :default-openeds="['1']">
-        <el-menu-item index="/"><i class="el-icon-message"></i>首页</el-menu-item>
-        <el-submenu index="2">
+    <el-aside style="width: 201px">
+      <el-menu :default-openeds=openeds :router=true>
+        <el-menu-item index="/home"><i class="el-icon-message"></i>首页</el-menu-item>
+        <el-submenu index="/about">
           <template slot="title"><i class="el-icon-message"></i>其他</template>
           <el-menu-item index="/about">About</el-menu-item>
           <el-menu-item index="/">选项1</el-menu-item>
         </el-submenu>
       </el-menu>
-      <el-button @click="logout">登出</el-button>
+      <el-popover
+          v-model="visible"
+          placement="top">
+        <el-button style="width: 100%;border-width: 0" @click="logout">登出</el-button>
+        <el-button slot="reference">{{ user.name }}</el-button>
+      </el-popover>
     </el-aside>
     <el-main>
       <router-view/>
@@ -18,18 +23,40 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "Layout",
+  data() {
+    return {
+      openeds: ['/'],
+      user: {
+        id: undefined,
+        name: '',
+        username: '',
+        roles: []
+      },
+      visible: false
+    }
+  },
+  mounted() {
+    this.getCurrentUserInfo();
+  },
   methods: {
     logout() {
+      this.$cookies.remove('token')
       this.$router.push({
         path: '/login'
+      })
+    },
+    getCurrentUserInfo() {
+      axios.get("/users/current").then((res) => {
+        this.user = res.data;
       })
     }
   }
 }
 </script>
-
 <style lang="less" scoped>
 .el-container {
   height: 100%;
@@ -47,7 +74,8 @@ export default {
 
     .el-button {
       border: none;
-      margin-bottom: 15px
+      margin-bottom: 15px;
+      width: 100%;
     }
   }
 
