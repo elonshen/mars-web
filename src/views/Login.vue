@@ -28,30 +28,26 @@ export default {
       if (!loginInfo.username) {
         this.$message({
           type: 'info',
-          message: "登录账号不能为空"
+          message: "账号不能为空"
         })
         return false;
       }
       if (!loginInfo.password) {
         this.$message({
           type: 'info',
-          message: '登录密码不能为空'
+          message: '密码不能为空'
         })
         return false;
       }
       return true;
     },
     Login() {
-      console.log(this.$router.query);
-      let isOk = this.valiData();
-      if (!isOk) {
+      if (!this.valiData()) {
         return false;
       }
       axios.post('/authentication', this.loginInfo).then((response) => {
         this.$cookies.set('token', response.data);
-        this.$router.push({
-          path: '/'
-        })
+        this.$router.push('/')
       })
     }
   }

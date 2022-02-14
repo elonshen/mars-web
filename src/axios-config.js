@@ -4,10 +4,10 @@
  */
 import axios from 'axios'
 import {Message} from 'element-ui'
-import router from 'vue-router'
+import router from './router'
 import Vue from 'vue'
 
-axios.defaults.baseURL = 'http://localhost:9100';
+axios.defaults.baseURL = 'http://localhost:8080';
 axios.defaults.timeout = 300000; // 请求超时5fen
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 axios.defaults.headers.put['Content-Type'] = 'application/json';
@@ -17,8 +17,6 @@ var loading;
 function startLoading() {
     loading = Vue.prototype.$loading({
         lock: true,
-        text: "Loading...",
-        background: 'rgba(0, 0, 0, 0)',
         target: document.querySelector('.loading-area') //设置加载动画区域
     });
 }
@@ -60,17 +58,10 @@ axios.interceptors.request.use(config => {
 
 // 响应拦截
 axios.interceptors.response.use(res => {
-    console.log(res)
     tryHideFullScreenLoading();
     switch (res.status) {
         case 200:
             return res;
-        case 401:
-            Message.error({
-                message: res.data.message
-            });
-            router.push('/login');
-            return Promise.reject(res);
         default:
             return Promise.reject(res);
     }
@@ -87,9 +78,18 @@ axios.interceptors.response.use(res => {
             });
             break;
         case 403:
+            if (err.response.expires != null) {
+                Message.info({
+                    message: '登入过期，请重新登入'
+                });
+                router.push('/login');
+                break;
+            }
+        case 401:
             Message.error({
-                message: '权限不足,请联系管理员!'
+                message: err.response.data.message
             });
+            router.push('/login');
             break;
         default:
             Message.error({

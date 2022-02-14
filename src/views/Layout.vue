@@ -2,9 +2,9 @@
   <el-container>
     <el-aside style="width: 201px">
       <el-menu :default-openeds=openeds :router=true>
-        <el-menu-item index="/home"><i class="el-icon-message"></i>首页</el-menu-item>
+        <el-menu-item index="/user">用户管理</el-menu-item>
         <el-submenu index="/about">
-          <template slot="title"><i class="el-icon-message"></i>其他</template>
+          <template slot="title">其他</template>
           <el-menu-item index="/about">About</el-menu-item>
           <el-menu-item index="/">选项1</el-menu-item>
         </el-submenu>
@@ -77,10 +77,6 @@ export default {
       margin-bottom: 15px;
       width: 100%;
     }
-  }
-
-  .el-main {
-    text-align: center;
   }
 }
 </style>
