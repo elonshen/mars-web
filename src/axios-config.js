@@ -6,29 +6,19 @@ import axios from 'axios'
 import {Message} from 'element-ui'
 import router from './router'
 import Vue from 'vue'
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css' //这个样式必须引入
 
 axios.defaults.baseURL = 'http://localhost:8080';
 axios.defaults.timeout = 300000; // 请求超时5fen
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 axios.defaults.headers.put['Content-Type'] = 'application/json';
-//请求时loading配置
-var loading;
 
-function startLoading() {
-    loading = Vue.prototype.$loading({
-        lock: true,
-        target: document.querySelector('.loading-area') //设置加载动画区域
-    });
-}
-
-function endLoading() {
-    loading.close();
-}
 var needLoadingRequestCount = 0;
 
 function showFullScreenLoading() {
     if (needLoadingRequestCount === 0) {
-        startLoading();
+        NProgress.start();
     }
     needLoadingRequestCount++;
 }
@@ -37,7 +27,9 @@ function tryHideFullScreenLoading() {
     if (needLoadingRequestCount <= 0) return;
     needLoadingRequestCount--;
     if (needLoadingRequestCount === 0) {
-        endLoading();
+        NProgress.done();
+    } else {
+        NProgress.inc();
     }
 }
 

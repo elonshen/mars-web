@@ -20,7 +20,6 @@ const routes = [
   },
   {
     path: '/',
-    name: 'User',
     component: Layout,
     redirect: '/user',
     children: [
