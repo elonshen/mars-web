@@ -78,7 +78,6 @@ export default {
         name: undefined
       },
       total: 0,
-      listLoading: true,
       list: null,
       temp: {
         id: undefined,
@@ -106,13 +105,11 @@ export default {
   },
   methods: {
     getList() {
-      this.listLoading = true
       const tempData = Object.assign({}, this.listQuery)
       tempData.page--
       axios.get('/users', {params: tempData}).then(response => {
         this.list = response.data.content
         this.total = response.data.totalElements
-        this.listLoading = false
       })
     },
     getRoles() {
