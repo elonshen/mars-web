@@ -77,11 +77,17 @@ axios.interceptors.response.use(res => {
                 router.push('/login');
                 break;
             }
+            Message.error({
+                message: '授权失败,请重新登录'
+            });
+            Vue.$cookies.remove('token')
+            break;
         case 401:
             Message.error({
-                message: err.response.data.message
+                message: '认证失败,请重新登录'
             });
             router.push('/login');
+            Vue.$cookies.remove('token')
             break;
         default:
             Message.error({
