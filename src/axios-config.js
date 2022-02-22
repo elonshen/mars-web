@@ -80,6 +80,7 @@ axios.interceptors.response.use(res => {
             Message.error({
                 message: '授权失败,请重新登录'
             });
+            router.push('/login');
             Vue.$cookies.remove('token')
             break;
         case 401:
