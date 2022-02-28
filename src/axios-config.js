@@ -14,7 +14,7 @@ axios.defaults.timeout = 300000; // 请求超时5fen
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 axios.defaults.headers.put['Content-Type'] = 'application/json';
 
-var needLoadingRequestCount = 0;
+let needLoadingRequestCount = 0;
 
 function showFullScreenLoading() {
     if (needLoadingRequestCount === 0) {

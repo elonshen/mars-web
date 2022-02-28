@@ -2,7 +2,7 @@
   <el-container>
     <el-aside style="width: 201px">
       <el-menu :default-openeds=openeds :router=true>
-        <el-menu-item index="/user">用户管理</el-menu-item>
+        <el-menu-item v-if="hasRole('admin')" index="/user">用户管理</el-menu-item>
         <el-submenu index="/about">
           <template slot="title">其他</template>
           <el-menu-item index="/about">About</el-menu-item>
@@ -53,6 +53,14 @@ export default {
       axios.get("/users/current").then((res) => {
         this.user = res.data;
       })
+    },
+    hasRole(role) {
+      for (let userRole of this.user.roles) {
+        if (userRole.name === role) {
+          return true;
+        }
+      }
+      return false;
     }
   }
 }

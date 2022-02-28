@@ -12,14 +12,14 @@
       <el-table-column label="姓名" prop="name"/>
       <el-table-column label="用户名" prop="username"/>
       <el-table-column label="角色" prop="roles">
-        <template slot-scope="{row}">
+        <template v-slot="{row}">
           <span v-for="role of row.roles" :key="role.id">
             {{ role.name }}
           </span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="操作" width="142">
-        <template slot-scope="{row,$index}">
+        <template v-slot="{row,$index}">
           <el-button size="mini" type="primary" @click="handleUpdate(row)">修改</el-button>
           <el-button v-if="row.id !== 1" size="mini" type="primary" @click="handleDelete(row,$index)">删除</el-button>
         </template>
@@ -81,7 +81,7 @@ export default {
       list: null,
       temp: {
         id: undefined,
-        name: '',
+        name: null,
         username: '',
         roles: []
       },
@@ -133,7 +133,7 @@ export default {
     resetTemp() {
       this.temp = {
         id: undefined,
-        name: '',
+        name: null,
         username: '',
         roles: []
       }
