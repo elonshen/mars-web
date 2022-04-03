@@ -11,13 +11,7 @@
     <el-table :data="list" style="width: 100%">
       <el-table-column label="姓名" prop="name"/>
       <el-table-column label="用户名" prop="username"/>
-      <el-table-column label="角色" prop="roles">
-        <template v-slot="{row}">
-          <span v-for="role of row.roles" :key="role.id">
-            {{ role.name }}
-          </span>
-        </template>
-      </el-table-column>
+      <el-table-column label="角色" prop="role"/>
       <el-table-column align="center" label="操作" width="142">
         <template v-slot="{row,$index}">
           <el-button size="mini" type="primary" @click="handleUpdate(row)">修改</el-button>
@@ -43,15 +37,8 @@
         <el-form-item label="密码" prop="password">
           <el-input v-model="temp.password"/>
         </el-form-item>
-        <el-form-item label="角色" prop="roles">
-          <el-select v-model="temp.roles" multiple placeholder="请选择">
-            <el-option
-                v-for="item in roles"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id"
-            />
-          </el-select>
+        <el-form-item label="角色" prop="role">
+          <el-input v-model="temp.role"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -83,7 +70,7 @@ export default {
         id: undefined,
         name: null,
         username: '',
-        roles: []
+        role: null
       },
       dialogStatus: null,
       textMap: {
@@ -95,13 +82,11 @@ export default {
         name: [{required: true, message: '姓名是必要的', trigger: 'blur'}],
         username: [{required: true, message: '用户名是必要的', trigger: 'blur'}],
         password: [{required: true, message: '密码是必要的', trigger: 'blur'}]
-      },
-      roles: null
+      }
     }
   },
   mounted() {
     this.getList()
-    this.getRoles()
   },
   methods: {
     getList() {
@@ -110,11 +95,6 @@ export default {
       axios.get('/users', {params: tempData}).then(response => {
         this.list = response.data.content
         this.total = response.data.totalElements
-      })
-    },
-    getRoles() {
-      axios.get('/roles').then(response => {
-        this.roles = response.data
       })
     },
     handleFilter() {
@@ -135,7 +115,7 @@ export default {
         id: undefined,
         name: null,
         username: '',
-        roles: []
+        role: null
       }
     },
     createData() {
@@ -156,13 +136,7 @@ export default {
     },
     handleUpdate(row) {
       this.rules.password[0].required = false
-      const temp = Object.assign({}, row) // copy obj
-      const roleIds = []
-      for (const role of temp.roles) {
-        roleIds.push(role.id)
-      }
-      temp.roles = roleIds
-      this.temp = temp
+      this.temp = Object.assign({}, row)
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
