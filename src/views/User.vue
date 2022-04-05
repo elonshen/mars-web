@@ -74,14 +74,14 @@ export default {
       },
       dialogStatus: null,
       textMap: {
-        update: 'Edit',
-        create: 'Create'
+        update: '新增',
+        create: '创建'
       },
       dialogFormVisible: false,
       rules: {
-        name: [{required: true, message: '姓名是必要的', trigger: 'blur'}],
-        username: [{required: true, message: '用户名是必要的', trigger: 'blur'}],
-        password: [{required: true, message: '密码是必要的', trigger: 'blur'}]
+        name: [{required: true, message: '必填', trigger: 'blur'}],
+        username: [{required: true, message: '必填', trigger: 'blur'}],
+        password: [{required: true, message: '必填', trigger: 'blur'}]
       }
     }
   },
