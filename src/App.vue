@@ -8,7 +8,6 @@ const drawer = ref(true)
 const subAPPName = ref(null)
 const isShowDrawer = ref(false)
 const route = useRoute();
-const user = ref({})
 const isShowAppBar = ref(true)
 
 watch(() => route.matched, async newMatched => {
@@ -33,6 +32,7 @@ watch(() => route.matched, async newMatched => {
     }
 )
 
+const user = ref({})
 watch(() => route.path, () => {
     if (localStorage.getItem('token')){
         axios.get('/users/me').then((res) => {

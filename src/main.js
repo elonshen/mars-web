@@ -4,15 +4,16 @@ import App from './App.vue'
 // Vuetify
 import 'vuetify/styles' //'vuetify/styles' should not be used in sass files as it resolves to precompiled css
 import {createVuetify} from 'vuetify'
-import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import '@mdi/font/css/materialdesignicons.css'
+import * as components from 'vuetify/components'
+import * as labsComponents from 'vuetify/labs/components'
+
 // Router
 import {createRouter, createWebHistory} from 'vue-router'
 import Login from "./Login.vue";
 import Backend from "./Backend.vue";
 import Users from "./Users.vue";
-import UserGroups from "./UserGroups.vue";
 import Mobile from "./Mobile.vue";
 import Cockpit from "./Cockpit.vue";
 
@@ -21,8 +22,12 @@ import axios from 'axios'
 import {snackbar} from "./store";
 
 const vuetify = createVuetify({
-    components,
     directives,
+    components: {
+        ...components,
+        ...labsComponents,
+
+    },
     theme: {
         themes: {
             light: {
@@ -45,7 +50,6 @@ export const router = createRouter({
             redirect: '/users',
             children: [
                 {path: '/users', component: Users},
-                {path: '/user-groups', component: UserGroups}
             ]
         },
         {
@@ -92,6 +96,7 @@ axios.interceptors.response.use(res => {
                 break
             case 500:
                 snackbar.info(err.response.data.message)
+                console.log(err.response.data.message)
                 break
             default:
                 snackbar.info(err.response.status + err.response.data.message)
